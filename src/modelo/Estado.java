@@ -1,7 +1,7 @@
 package modelo;
 
 public enum Estado {
-    ACTIVO,
+    DISPONIBLE,
     OCUPADO,
     MANTENIMIENTO
 }

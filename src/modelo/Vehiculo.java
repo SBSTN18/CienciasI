@@ -6,7 +6,6 @@ public class Vehiculo {
     private Estado estado;
     private TipoVehiculo tipo;
     private String zona;
-    private Tecnicos tecnico;
 
     public Vehiculo() {
     }
@@ -15,8 +14,7 @@ public class Vehiculo {
         this.id = id;
         this.zona = zona;
         this.tipo = tipo;
-        this.estado = Estado.ACTIVO;
-        this.tecnico = null;
+        this.estado = Estado.DISPONIBLE;
     } 
 
     public String getId() {
@@ -42,14 +40,6 @@ public class Vehiculo {
     public void setZona(String zona) {
         this.zona = zona;
     }   
-
-    public Tecnicos getTecnico() {
-        return tecnico;
-    }   
-
-    public void setTecnico(Tecnicos tecnico) {
-        this.tecnico = tecnico;
-    }
 
     public TipoVehiculo getTipo() {
         return tipo;

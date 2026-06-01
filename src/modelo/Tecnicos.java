@@ -2,7 +2,7 @@ package modelo;
 
 public class Tecnicos {
 
-    private Long id;
+    private String id;
     private String nombre;
     private String zona;
     private Especialidad especialidad;
@@ -11,19 +11,19 @@ public class Tecnicos {
     public Tecnicos() {
     }
 
-    public Tecnicos(Long id, String nombre, String zona, Especialidad especialidad) {
-        this.id = id;
+    public Tecnicos(String id, String nombre, String zona, Especialidad especialidad) {
+        this.id =  id;
         this.nombre = nombre;
         this.zona = zona;
         this.especialidad = especialidad;
-        this.estado = Estado.ACTIVO;
+        this.estado = Estado.DISPONIBLE;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     } 
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
