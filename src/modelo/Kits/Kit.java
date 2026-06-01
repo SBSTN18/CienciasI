@@ -1,18 +1,20 @@
 package modelo.Kits;
 
+import modelo.Estado;
+
 public class Kit {
 
     private Long id;
     private int cantidadElementos;
-    private boolean disponible;
+    private Estado estado;
 
     public Kit() {
     }
 
-    public Kit(Long id, int cantidadElementos, boolean disponible) {
+    public Kit(Long id, int cantidadElementos, Estado estado) {
         this.id = id;
         this.cantidadElementos = cantidadElementos;
-        this.disponible = disponible;
+        this.estado = estado;
     }
 
     public Long getId() {
@@ -31,12 +33,12 @@ public class Kit {
         this.cantidadElementos = cantidadElementos;
     }
 
-    public boolean isDisponible() {
-        return disponible;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
     
 }

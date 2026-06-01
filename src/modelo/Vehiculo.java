@@ -3,19 +3,19 @@ package modelo;
 public class Vehiculo {
 
     private String id;
-    private boolean disponible;
-    private boolean activo;
+    private Estado estado;
+    private TipoVehiculo tipo;
     private String zona;
     private Tecnicos tecnico;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String id, String zona, boolean disponible, boolean activo){
+    public Vehiculo(String id, String zona, TipoVehiculo tipo) {
         this.id = id;
         this.zona = zona;
-        this.disponible = disponible;
-        this.activo = activo;
+        this.tipo = tipo;
+        this.estado = Estado.ACTIVO;
         this.tecnico = null;
     } 
 
@@ -27,20 +27,12 @@ public class Vehiculo {
         this.id = id;
     }
 
-    public boolean isDisponible() {
-        return disponible;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     public String getZona() {
@@ -57,6 +49,14 @@ public class Vehiculo {
 
     public void setTecnico(Tecnicos tecnico) {
         this.tecnico = tecnico;
+    }
+
+    public TipoVehiculo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoVehiculo tipo) {
+        this.tipo = tipo;
     }
 
 }

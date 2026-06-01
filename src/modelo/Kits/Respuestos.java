@@ -1,32 +1,24 @@
 package modelo.Kits;
 
+import modelo.Estado;
+
 public class Respuestos {
 
-    private boolean estado;
-    private boolean disponible;
+    private Estado estado;
 
     public Respuestos() {
     }
 
-    public Respuestos(boolean estado, boolean disponible) {
+    public Respuestos(Estado estado) {
         this.estado = estado;
-        this.disponible = disponible;
     }
 
-    public boolean isEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
-    }
-
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
     }
     
 }

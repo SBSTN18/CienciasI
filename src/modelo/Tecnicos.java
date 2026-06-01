@@ -5,20 +5,18 @@ public class Tecnicos {
     private Long id;
     private String nombre;
     private String zona;
-    private String especialidad;
-    private boolean activo;
-    private boolean disponible;
+    private Especialidad especialidad;
+    private Estado estado;
 
     public Tecnicos() {
     }
 
-    public Tecnicos(Long id, String nombre, String zona, String especialidad, boolean activo, boolean disponible) {
+    public Tecnicos(Long id, String nombre, String zona, Especialidad especialidad) {
         this.id = id;
         this.nombre = nombre;
         this.zona = zona;
         this.especialidad = especialidad;
-        this.activo = activo;
-        this.disponible = disponible;
+        this.estado = Estado.ACTIVO;
     }
 
     public Long getId() {
@@ -45,27 +43,20 @@ public class Tecnicos {
         this.zona = zona;
     }   
 
-    public String getEspecialidad() {
+    public Especialidad getEspecialidad() {
         return especialidad;
     }
 
-    public void setEspecialidad(String especialidad) {
+    public void setEspecialidad(Especialidad especialidad) {
         this.especialidad = especialidad;
     }   
 
-    public boolean isActivo() {
-        return activo;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
-
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
+    
 }
