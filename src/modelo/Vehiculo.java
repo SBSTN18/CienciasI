@@ -2,7 +2,7 @@ package modelo;
 
 public class Vehiculo {
 
-    private Long id;
+    private String id;
     private boolean disponible;
     private boolean activo;
     private String zona;
@@ -11,7 +11,7 @@ public class Vehiculo {
     public Vehiculo() {
     }
 
-    public Vehiculo(Long id, String zona, boolean disponible, boolean activo){
+    public Vehiculo(String id, String zona, boolean disponible, boolean activo){
         this.id = id;
         this.zona = zona;
         this.disponible = disponible;
@@ -19,11 +19,11 @@ public class Vehiculo {
         this.tecnico = null;
     } 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
