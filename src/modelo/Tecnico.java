@@ -1,5 +1,8 @@
 package modelo;
 
+import modelo.Enums.Especialidad;
+import modelo.Enums.Estado;
+
 public class Tecnicos {
 
     private String id;

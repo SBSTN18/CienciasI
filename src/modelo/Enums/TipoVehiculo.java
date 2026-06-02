@@ -1,4 +1,4 @@
-package modelo;
+package modelo.Enums;
 
 public enum TipoVehiculo {
     MotoApoyo,

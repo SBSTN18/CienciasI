@@ -1,0 +1,12 @@
+package modelo.Enums;
+
+public enum TipoServicio {
+    
+    CAMBIO_LLANTA,
+    PASO_CORRIENTE,
+    ENVIO_GRUA,
+    APERTURA_PUERTAS,
+    SUMINISTRO_COMBUSTIBLE,
+    REVISION_MECANICA,
+    VEHICULO_VARADO
+}

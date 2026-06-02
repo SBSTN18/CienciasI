@@ -1,6 +1,6 @@
 package modelo.Kits;
 
-import modelo.Estado;
+import modelo.Enums.Estado;
 
 public class Kit {
 

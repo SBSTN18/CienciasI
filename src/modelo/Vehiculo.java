@@ -1,5 +1,8 @@
 package modelo;
 
+import modelo.Enums.Estado;
+import modelo.Enums.TipoVehiculo;
+
 public class Vehiculo {
 
     private String id;

@@ -2,8 +2,8 @@ package Control;
 
 import java.util.UUID;
 
-import modelo.TipoVehiculo;
 import modelo.Vehiculo;
+import modelo.Enums.TipoVehiculo;
 
 public class VehiculoControlador {
 
