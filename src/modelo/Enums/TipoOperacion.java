@@ -1,0 +1,9 @@
+package modelo.Enums;
+
+public enum TipoOperacion {
+    ASIGNAR_VEHICULO,
+    ASIGNAR_TECNICO,
+    CAMBIAR_ESTADO_VEHICULO,
+    CAMBIAR_ESTADO_TECNICO,
+    CERRAR_SOLICITUD
+}

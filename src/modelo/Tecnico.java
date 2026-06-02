@@ -1,9 +1,11 @@
 package modelo;
 
+import java.util.UUID;
+
 import modelo.Enums.Especialidad;
 import modelo.Enums.Estado;
 
-public class Tecnicos {
+public class Tecnico {
 
     private String id;
     private String nombre;
@@ -11,11 +13,11 @@ public class Tecnicos {
     private Especialidad especialidad;
     private Estado estado;
 
-    public Tecnicos() {
+    public Tecnico() {
     }
 
-    public Tecnicos(String id, String nombre, String zona, Especialidad especialidad) {
-        this.id =  id;
+    public Tecnico(String nombre, String zona, Especialidad especialidad) {
+        this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.zona = zona;
         this.especialidad = especialidad;
@@ -62,4 +64,7 @@ public class Tecnicos {
         this.estado = estado;
     }
     
+    public String toString() {
+        return "Tecnico{" + "id=" + id + ", nombre=" + nombre + ", zona=" + zona + ", especialidad=" + especialidad + ", estado=" + estado + '}';
+    }
 }

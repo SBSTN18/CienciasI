@@ -18,7 +18,7 @@ public class Solicitud {
     private EstadoSolicitud estado;
     private Cliente cliente;
     private Vehiculo vehiculoAsignado;
-    private Tecnicos tecnicoAsignado;
+    private Tecnico tecnicoAsignado;
     private LocalDateTime horaRegistro;
     private LocalDateTime horaFin;
 
@@ -56,11 +56,10 @@ public class Solicitud {
      * Cierra la solicitud registrando la hora de fin. Regla #9.
      */
     public void cerrar() {
-        if (!tieneRecursosAsignados()) {
-            throw new RuntimeException("No se puede cerrar sin recursos asignados");
-        }
-        this.estado = EstadoSolicitud.CERRADA;
-        this.horaFin = LocalDateTime.now();
+        if (tieneRecursosAsignados()) {
+            this.estado = EstadoSolicitud.CERRADA;
+            this.horaFin = LocalDateTime.now();
+        }        
     }
 
     public String getId() { return id; }
@@ -85,12 +84,22 @@ public class Solicitud {
         this.vehiculoAsignado = vehiculoAsignado; 
     }
 
-    public Tecnicos getTecnicoAsignado() { return tecnicoAsignado; }
-    public void setTecnicoAsignado(Tecnicos tecnicoAsignado) { 
+    public Tecnico getTecnicoAsignado() { return tecnicoAsignado; }
+    public void setTecnicoAsignado(Tecnico tecnicoAsignado) { 
         this.tecnicoAsignado = tecnicoAsignado; 
     }
 
     public LocalDateTime getHoraRegistro() { return horaRegistro; }
 
     public LocalDateTime getHoraFin() { return horaFin; }
+
+    public String toString() {
+        return "Solicitud{" + "id=" + id + ", zona=" + zona + ", servicio=" + servicio + 
+               ", prioridad=" + prioridad + ", estado=" + estado + 
+               ", cliente=" + cliente.getNombre() + ", vehiculoAsignado=" + 
+               (vehiculoAsignado != null ? vehiculoAsignado.getId() : "N/A") + 
+               ", tecnicoAsignado=" + 
+               (tecnicoAsignado != null ? tecnicoAsignado.getNombre() : "N/A") + 
+               ", horaRegistro=" + horaRegistro + ", horaFin=" + horaFin + '}';
+    }
 }

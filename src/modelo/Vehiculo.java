@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.UUID;
 import modelo.Enums.Estado;
 import modelo.Enums.TipoVehiculo;
 
@@ -13,8 +14,8 @@ public class Vehiculo {
     public Vehiculo() {
     }
 
-    public Vehiculo(String id, String zona, TipoVehiculo tipo) {
-        this.id = id;
+    public Vehiculo(String zona, TipoVehiculo tipo) {
+        this.id = UUID.randomUUID().toString();
         this.zona = zona;
         this.tipo = tipo;
         this.estado = Estado.DISPONIBLE;
@@ -50,6 +51,10 @@ public class Vehiculo {
 
     public void setTipo(TipoVehiculo tipo) {
         this.tipo = tipo;
+    }
+
+    public String toString() {
+        return "Vehiculo{" + "id=" + id + ", estado=" + estado + ", tipo=" + tipo + ", zona=" + zona + '}';
     }
 
 }

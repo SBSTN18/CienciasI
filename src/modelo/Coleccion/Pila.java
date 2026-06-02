@@ -19,7 +19,7 @@ public class Pila<T> {
 
     public T desapilar() {
         if (esVacia()) {
-            throw new RuntimeException("La pila está vacía");
+            return null; 
         }
         T dato = cima.getDato();
         cima = cima.getSiguiente();
@@ -29,7 +29,7 @@ public class Pila<T> {
 
     public T getCima() {
         if (esVacia()) {
-            throw new RuntimeException("La pila está vacía");
+            return null;
         }
         return cima.getDato();
     }

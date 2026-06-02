@@ -2,7 +2,7 @@ package modelo.Coleccion;
 
 public class Cola<T> {
 
-    private Nodo<T> frente;
+    public Nodo<T> frente;
     private Nodo<T> fin;
     private int tamaño;
 
@@ -30,7 +30,7 @@ public class Cola<T> {
 
     public T desencolar() {
         if (estaVacia()) {
-            throw new RuntimeException("La cola está vacía");
+            return null;
         }
         T dato = frente.getDato();
         frente = frente.getSiguiente();
@@ -41,11 +41,11 @@ public class Cola<T> {
         return dato;
     }
 
-    public T obtenerFrente() {
+    public Nodo<T> getFrente() {
         if (estaVacia()) {
-            throw new RuntimeException("La cola está vacía");
+            return null;
         }
-        return frente.getDato();
+        return frente;
     }
 
     public int getTamaño() {
