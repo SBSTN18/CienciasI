@@ -25,6 +25,7 @@ public class PanelSolicitudes extends JPanel {
     // Asignacion de recursos
     private JComboBox<Vehiculo> comboVehiculos;
     private JComboBox<Tecnico> comboTecnicos;
+    private JComboBox<Solicitud> comboEnProceso;
     private JButton btnSiguienteSolicitud;
     private JButton btnAsignarRecursos;
     private JButton btnCerrarSolicitud;
@@ -127,6 +128,17 @@ public class PanelSolicitudes extends JPanel {
 
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
+        panelAsignacion.add(new JSeparator(), gbc);
+
+        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        panelAsignacion.add(new JLabel("Solicitud a cerrar:"), gbc);
+        gbc.gridx = 1;
+        comboEnProceso = new JComboBox<>();
+        panelAsignacion.add(comboEnProceso, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 2;
         btnCerrarSolicitud = new JButton("Cerrar Solicitud");
         panelAsignacion.add(btnCerrarSolicitud, gbc);
 
@@ -197,6 +209,13 @@ public class PanelSolicitudes extends JPanel {
         comboTecnicos.removeAllItems();
     }
 
+    public void cargarSolicitudesEnProceso(Solicitud[] solicitudes) {
+        comboEnProceso.removeAllItems();
+        for (int i = 0; i < solicitudes.length; i++) {
+            comboEnProceso.addItem(solicitudes[i]);
+        }
+    }
+
     // ---- Getters para el controlador de vista ----
     public String getZona() { return txtZona.getText().trim(); }
     public String getNombreCliente() { return txtNombreCliente.getText().trim(); }
@@ -212,4 +231,10 @@ public class PanelSolicitudes extends JPanel {
     public JButton getBtnSiguienteSolicitud() { return btnSiguienteSolicitud; }
     public JButton getBtnAsignarRecursos() { return btnAsignarRecursos; }
     public JButton getBtnCerrarSolicitud() { return btnCerrarSolicitud; }
+
+    public Solicitud getSolicitudACerrar() {
+        return (Solicitud) comboEnProceso.getSelectedItem();
+    }
+
+    
 }

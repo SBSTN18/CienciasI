@@ -118,6 +118,7 @@ public class ControladorVista {
         ventana.getPanelSolicitudes().getBtnCerrarSolicitud().addActionListener(e -> {
             cerrarSolicitud();
         });
+		
     }
 
     private void crearSolicitud() {
@@ -196,22 +197,30 @@ public class ControladorVista {
     }
 
     private void cerrarSolicitud() {
-        Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudActual();
-        if (solicitud == null) {
-            ventana.mostrarError("No hay solicitud activa");
-            return;
-        }
-        boolean cerrada = controlador.cerrarSolicitud(solicitud);
-        if (!cerrada) {
-            ventana.mostrarError("La solicitud no tiene recursos asignados");
-            return;
-        }
-        ventana.mostrarMensaje("Solicitud cerrada correctamente");
+        Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudACerrar();
+		if (solicitud == null) {
+			ventana.mostrarError("No hay solicitud activa");
+			return;
+		}
+		boolean cerrada = controlador.cerrarSolicitud(solicitud);
+		if (!cerrada) {
+			ventana.mostrarError("La solicitud no tiene recursos asignados");
+			return;
+		}
+		ventana.mostrarMensaje("Solicitud cerrada correctamente");
 		ventana.getPanelSolicitudes().limpiarAsignacion();
-        cargarTablaSolicitudes();
-        cargarTablaVehiculos();
-        cargarTablaTecnicos();
+		cargarTablaSolicitudes();
+		cargarTablaVehiculos();
+		cargarTablaTecnicos();
+		cargarSolicitudesEnProceso();
     }
+
+
+	private void cargarSolicitudesEnProceso() {
+		Solicitud[] enProceso = controlador.obtenerSolicitudesEnProceso();
+		ventana.getPanelSolicitudes().cargarSolicitudesEnProceso(enProceso);
+	}
+
 
     private void cargarTablaSolicitudes() {
         Solicitud[] solicitudes = controlador.obtenerSolicitudesPendientes();

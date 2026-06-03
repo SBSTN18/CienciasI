@@ -149,6 +149,10 @@ public class ControladorPrincipal {
         return true;
     }
 
+    public Solicitud[] obtenerSolicitudesEnProceso() {
+        return colaSolicitudes.obtenerEnProceso();
+    }
+
     // ==================== PASO 7: DESHACER OPERACIONES ====================
 
     public boolean deshacerUltimaOperacion() {
