@@ -194,6 +194,7 @@ public class ControladorVista {
         cargarTablaSolicitudes();
         cargarTablaVehiculos();
         cargarTablaTecnicos();
+        cargarSolicitudesEnProceso();
     }
 
     private void cerrarSolicitud() {

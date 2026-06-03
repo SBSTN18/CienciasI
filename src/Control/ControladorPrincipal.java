@@ -132,6 +132,12 @@ public class ControladorPrincipal {
         tecnico.setEstado(Estado.OCUPADO);
         pilaOperaciones.registrarAsignacionTecnico(solicitud, tecnico);
         pilaOperaciones.registrarCambioEstadoTecnico(tecnico, estadoAnterior);
+        
+        // Si ahora tiene ambos recursos, agregar a en proceso
+        if (solicitud.tieneRecursosAsignados()) {
+            colaSolicitudes.agregarEnProceso(solicitud);
+        }
+        
         return true;
     }
 
