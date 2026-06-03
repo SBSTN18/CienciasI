@@ -4,6 +4,14 @@ import Control.Vista.ControladorVista;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana principal del sistema AutoRescate 24/7.
+ * Contiene los diferentes paneles de gestión organizados mediante pestañas
+ * y proporciona métodos para mostrar mensajes al usuario.
+ *
+ * @author AutoRescate 24/7
+ * @version 1.0
+ */
 public class VentanaPrincipal extends JFrame {
 
     private PanelVehiculos panelVehiculos;
@@ -14,10 +22,16 @@ public class VentanaPrincipal extends JFrame {
 
     private JTabbedPane tabbedPane;
 
+    /**
+     * Crea e inicializa la ventana principal.
+     */
     public VentanaPrincipal() {
         initComponents();
     }
 
+    /**
+     * Inicializa todos los componentes gráficos de la ventana.
+     */
     private void initComponents() {
         setTitle("AutoRescate 24/7");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,25 +73,82 @@ public class VentanaPrincipal extends JFrame {
         add(lblFooter, BorderLayout.SOUTH);
     }
 
+    /**
+     * Hace visible la ventana principal.
+     */
     public void mostrar() {
         setVisible(true);
     }
 
+    /**
+     * Muestra un mensaje de error al usuario.
+     *
+     * @param mensaje texto del mensaje.
+     */
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un mensaje informativo al usuario.
+     *
+     * @param mensaje texto del mensaje.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Muestra un mensaje de alerta al usuario.
+     *
+     * @param mensaje texto de la alerta.
+     */
     public void mostrarAlerta(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Alerta", JOptionPane.WARNING_MESSAGE);
     }
 
-    public PanelVehiculos getPanelVehiculos() { return panelVehiculos; }
-    public PanelTecnicos getPanelTecnicos() { return panelTecnicos; }
-    public PanelSolicitudes getPanelSolicitudes() { return panelSolicitudes; }
-    public PanelKits getPanelKits() { return panelKits; }
-    public PanelReporte getPanelReporte() { return panelReporte; }
+    /**
+     * Obtiene el panel de gestión de vehículos.
+     *
+     * @return panel de vehículos.
+     */
+    public PanelVehiculos getPanelVehiculos() {
+        return panelVehiculos;
+    }
+
+    /**
+     * Obtiene el panel de gestión de técnicos.
+     *
+     * @return panel de técnicos.
+     */
+    public PanelTecnicos getPanelTecnicos() {
+        return panelTecnicos;
+    }
+
+    /**
+     * Obtiene el panel de gestión de solicitudes.
+     *
+     * @return panel de solicitudes.
+     */
+    public PanelSolicitudes getPanelSolicitudes() {
+        return panelSolicitudes;
+    }
+
+    /**
+     * Obtiene el panel de gestión de kits y repuestos.
+     *
+     * @return panel de kits y repuestos.
+     */
+    public PanelKits getPanelKits() {
+        return panelKits;
+    }
+
+    /**
+     * Obtiene el panel de reportes.
+     *
+     * @return panel de reportes.
+     */
+    public PanelReporte getPanelReporte() {
+        return panelReporte;
+    }
 }

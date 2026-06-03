@@ -17,17 +17,35 @@ import vista.VentanaPrincipal;
 import javax.swing.*;
 import java.io.File;
 
+/**
+ * Controlador encargado de gestionar la interacción entre la vista
+ * principal y la lógica de negocio del sistema AutoRescate 24/7.
+ * Administra los eventos de los paneles, validaciones de datos
+ * y actualización de la interfaz gráfica.
+ *
+ * @author AutoRescate 24/7
+ * @version 1.0
+ */
 public class ControladorVista {
 
     private ControladorPrincipal controlador;
     private VentanaPrincipal ventana;
 
+    /**
+     * Inicializa el controlador de la interfaz.
+     *
+     * @param ventana ventana principal del sistema.
+     * @param controlador controlador principal de negocio.
+     */ 
     public ControladorVista(VentanaPrincipal ventana, ControladorPrincipal controlador) {
         this.ventana = ventana;
         this.controlador = controlador;
         initEventos();
     }
 
+    /**
+     * Registra todos los eventos de la interfaz.
+     */
     private void initEventos() {
         initEventosVehiculos();
         initEventosTecnicos();
@@ -36,14 +54,18 @@ public class ControladorVista {
         initEventosReporte();
     }
 
-    // ==================== PANEL VEHÍCULOS ====================
-
+    /**
+     * Configura los eventos del panel de vehículos.
+     */
     private void initEventosVehiculos() {
         ventana.getPanelVehiculos().getBtnRegistrar().addActionListener(e -> {
             registrarVehiculo();
         });
     }
 
+    /**
+     * Registra un vehículo en el sistema.
+     */
     private void registrarVehiculo() {
         TipoVehiculo tipo = ventana.getPanelVehiculos().getTipoSeleccionado();
         String zona = ventana.getPanelVehiculos().getZona();
@@ -57,24 +79,36 @@ public class ControladorVista {
         cargarTablaVehiculos();
     }
 
+    /**
+     * Actualiza la tabla de vehículos registrados.
+     */
     private void cargarTablaVehiculos() {
         Vehiculo[] vehiculos = controlador.obtenerTodosVehiculos();
         ventana.getPanelVehiculos().cargarTabla(vehiculos);
     }
 
+
+    /**
+     * Carga los vehículos disponibles para asignación.
+     */
     private void cargarVehiculosDisponibles() {
         Vehiculo[] disponibles = controlador.obtenerVehiculosPorEstado(Estado.DISPONIBLE);
         ventana.getPanelSolicitudes().cargarVehiculosDisponibles(disponibles);
     }
 
-    // ==================== PANEL TÉCNICOS ====================
-
+    
+    /**
+     * Configura los eventos del panel de técnicos.
+     */
     private void initEventosTecnicos() {
         ventana.getPanelTecnicos().getBtnRegistrar().addActionListener(e -> {
             registrarTecnico();
         });
     }
 
+    /**
+     * Registra un técnico en el sistema.
+     */
     private void registrarTecnico() {
         String nombre = ventana.getPanelTecnicos().getNombre();
         String zona = ventana.getPanelTecnicos().getZona();
@@ -93,18 +127,25 @@ public class ControladorVista {
         cargarTablaTecnicos();
     }
 
+    /**
+     * Actualiza la tabla de técnicos registrados.
+     */
     private void cargarTablaTecnicos() {
         Tecnico[] tecnicos = controlador.obtenerTodosTecnicos();
         ventana.getPanelTecnicos().cargarTabla(tecnicos);
     }
 
+    /**
+     * Carga los técnicos disponibles para asignación.
+     */
     private void cargarTecnicosDisponibles() {
         Tecnico[] disponibles = controlador.obtenerTecnicosPorEstado(Estado.DISPONIBLE);
         ventana.getPanelSolicitudes().cargarTecnicosDisponibles(disponibles);
     }
 
-    // ==================== PANEL SOLICITUDES ====================
-
+    /**
+     * Configura los eventos del panel de solicitudes.
+     */
     private void initEventosSolicitudes() {
         ventana.getPanelSolicitudes().getBtnCrearSolicitud().addActionListener(e -> {
             crearSolicitud();
@@ -121,6 +162,9 @@ public class ControladorVista {
 		
     }
 
+    /**
+     * Registra una nueva solicitud de servicio.
+     */
     private void crearSolicitud() {
         String zona = ventana.getPanelSolicitudes().getZona();
         String nombreCliente = ventana.getPanelSolicitudes().getNombreCliente();
@@ -149,6 +193,9 @@ public class ControladorVista {
         }
     }
 
+    /**
+     * Obtiene la siguiente solicitud pendiente según prioridad.
+     */
     private void obtenerSiguienteSolicitud() {
         Solicitud siguiente = controlador.obtenerSiguienteSolicitud();
         if (siguiente == null) {
@@ -160,6 +207,9 @@ public class ControladorVista {
         cargarTecnicosDisponibles();
     }
 
+    /**
+     * Asigna vehículo y técnico a una solicitud.
+     */
     private void asignarRecursos() {
         Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudActual();
         Vehiculo vehiculo = ventana.getPanelSolicitudes().getVehiculoSeleccionado();
@@ -197,6 +247,9 @@ public class ControladorVista {
         cargarSolicitudesEnProceso();
     }
 
+    /**
+     * Cierra una solicitud en proceso.
+     */
     private void cerrarSolicitud() {
         Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudACerrar();
 		if (solicitud == null) {
@@ -216,20 +269,25 @@ public class ControladorVista {
 		cargarSolicitudesEnProceso();
     }
 
-
+    /**
+     * Actualiza la lista de solicitudes en proceso.
+     */
 	private void cargarSolicitudesEnProceso() {
 		Solicitud[] enProceso = controlador.obtenerSolicitudesEnProceso();
 		ventana.getPanelSolicitudes().cargarSolicitudesEnProceso(enProceso);
 	}
 
-
+    /**
+     * Actualiza la tabla de solicitudes pendientes.
+     */
     private void cargarTablaSolicitudes() {
         Solicitud[] solicitudes = controlador.obtenerSolicitudesPendientes();
         ventana.getPanelSolicitudes().cargarTabla(solicitudes);
     }
 
-    // ==================== PANEL KITS ====================
-
+    /**
+     * Configura los eventos del panel de kits y repuestos.
+     */
     private void initEventosKits() {
         ventana.getPanelKits().getBtnAgregarKit().addActionListener(e -> {
             agregarKit();
@@ -245,6 +303,9 @@ public class ControladorVista {
         });
     }
 
+    /**
+     * Agrega un kit al inventario.
+     */
     private void agregarKit() {
         int cantidad = ventana.getPanelKits().getCantidadElementos();
         if (cantidad <= 0) {
@@ -257,6 +318,9 @@ public class ControladorVista {
         actualizarInfoKits();
     }
 
+    /**
+     * Retira un kit del inventario.
+     */
     private void retirarKit() {
         if (!controlador.hayKits()) {
             ventana.mostrarError("No hay kits disponibles");
@@ -267,6 +331,9 @@ public class ControladorVista {
         actualizarInfoKits();
     }
 
+    /**
+     * Agrega un repuesto al inventario.
+     */
     private void agregarRepuesto() {
         String nombre = ventana.getPanelKits().getNombreRepuesto();
         int cantidad = ventana.getPanelKits().getCantidadRepuesto();
@@ -284,6 +351,9 @@ public class ControladorVista {
         actualizarInfoKits();
     }
 
+    /**
+     * Retira un repuesto del inventario.
+     */
     private void retirarRepuesto() {
         if (!controlador.hayRepuestos()) {
             ventana.mostrarError("No hay repuestos disponibles");
@@ -294,6 +364,9 @@ public class ControladorVista {
         actualizarInfoKits();
     }
 
+    /**
+     * Actualiza la información mostrada del inventario.
+     */
     private void actualizarInfoKits() {
         ventana.getPanelKits().actualizarInfo(
             controlador.getTotalKits(),
@@ -301,8 +374,9 @@ public class ControladorVista {
         );
     }
 
-    // ==================== PANEL REPORTE ====================
-
+    /**
+     * Configura los eventos del panel de reportes.
+     */
     private void initEventosReporte() {
         ventana.getPanelReporte().getBtnSeleccionarRuta().addActionListener(e -> {
             seleccionarRuta();
@@ -312,6 +386,9 @@ public class ControladorVista {
         });
     }
 
+    /**
+     * Permite seleccionar la ubicación donde se guardará el reporte.
+     */
     private void seleccionarRuta() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar reporte CSV");
@@ -324,6 +401,9 @@ public class ControladorVista {
         }
     }
 
+    /**
+     * Exporta el reporte diario en formato CSV.
+     */
     private void exportarCSV() {
         String ruta = ventana.getPanelReporte().getRutaArchivo();
         if (ruta.isEmpty()) {
