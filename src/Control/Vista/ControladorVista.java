@@ -189,6 +189,7 @@ public class ControladorVista {
         }
 
         ventana.mostrarMensaje("Recursos asignados correctamente");
+		ventana.getPanelSolicitudes().limpiarAsignacion();
         cargarTablaSolicitudes();
         cargarTablaVehiculos();
         cargarTablaTecnicos();
@@ -206,6 +207,7 @@ public class ControladorVista {
             return;
         }
         ventana.mostrarMensaje("Solicitud cerrada correctamente");
+		ventana.getPanelSolicitudes().limpiarAsignacion();
         cargarTablaSolicitudes();
         cargarTablaVehiculos();
         cargarTablaTecnicos();

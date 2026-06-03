@@ -23,6 +23,7 @@ public class ControladorPrincipal {
     private PilaKitsControl pilaKits;
     private PilaRepuestoControl pilaRepuesto;
     private ExportarCSVControl csvControl;
+    
 
     public ControladorPrincipal() {
         this.colaSolicitudes = new ColaSolicitudControl();
@@ -144,6 +145,7 @@ public class ControladorPrincipal {
         solicitud.cerrar();
         solicitud.getVehiculoAsignado().setEstado(Estado.DISPONIBLE);
         solicitud.getTecnicoAsignado().setEstado(Estado.DISPONIBLE);
+        colaSolicitudes.agregarCerrada(solicitud); 
         return true;
     }
 
@@ -204,7 +206,6 @@ public class ControladorPrincipal {
     // ==================== PASO 9: EXPORTAR CSV ====================
 
     public boolean exportarCSV(String rutaArchivo) {
-        Solicitud[] pendientes = colaSolicitudes.obtenerPendientes();
-        return csvControl.exportarSolicitudes(pendientes, rutaArchivo);
-    }
+    return csvControl.exportarSolicitudes(colaSolicitudes.obtenerCerradas(), rutaArchivo);
+}
 }

@@ -191,6 +191,12 @@ public class PanelSolicitudes extends JPanel {
         txtTelefonoCliente.setText("");
     }
 
+    public void limpiarAsignacion() {
+        lblSolicitudActual.setText("Sin solicitud seleccionada");
+        comboVehiculos.removeAllItems();
+        comboTecnicos.removeAllItems();
+    }
+
     // ---- Getters para el controlador de vista ----
     public String getZona() { return txtZona.getText().trim(); }
     public String getNombreCliente() { return txtNombreCliente.getText().trim(); }

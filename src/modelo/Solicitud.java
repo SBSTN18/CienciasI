@@ -23,7 +23,7 @@ public class Solicitud {
     private LocalDateTime horaFin;
 
     public Solicitud() {
-        this.id = UUID.randomUUID().toString();
+        this.id = "SL-" + UUID.randomUUID().toString().substring(0, 5);
         this.horaRegistro = LocalDateTime.now();
         this.estado = EstadoSolicitud.PENDIENTE;
     }
@@ -34,7 +34,7 @@ public class Solicitud {
      */
     public Solicitud(String zona, TipoServicio servicio, 
                      Prioridad prioridad, Cliente cliente) {
-        this.id = UUID.randomUUID().toString();
+        this.id = "SL-" + UUID.randomUUID().toString().substring(0, 5);
         this.zona = zona;
         this.servicio = servicio;
         this.prioridad = prioridad;

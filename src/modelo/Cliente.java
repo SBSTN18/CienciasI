@@ -11,7 +11,7 @@ public class Cliente {
     private TipoCliente tipoCliente;
 
     public Cliente(String nombre, String telefono, TipoCliente tipoCliente) {
-        this.id = UUID.randomUUID().toString();
+        this.id = "CL-" + UUID.randomUUID().toString().substring(0, 5);
         this.nombre = nombre;
         this.telefono = telefono;
         this.tipoCliente = tipoCliente;

@@ -17,7 +17,7 @@ public class Tecnico {
     }
 
     public Tecnico(String nombre, String zona, Especialidad especialidad) {
-        this.id = UUID.randomUUID().toString();
+        this.id = "TC-" + java.util.UUID.randomUUID().toString().substring(0, 5);
         this.nombre = nombre;
         this.zona = zona;
         this.especialidad = especialidad;

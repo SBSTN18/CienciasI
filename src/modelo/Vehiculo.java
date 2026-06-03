@@ -15,7 +15,7 @@ public class Vehiculo {
     }
 
     public Vehiculo(String zona, TipoVehiculo tipo) {
-        this.id = UUID.randomUUID().toString();
+        this.id = "VH-" + UUID.randomUUID().toString().substring(0, 5);
         this.zona = zona;
         this.tipo = tipo;
         this.estado = Estado.DISPONIBLE;
