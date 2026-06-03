@@ -1,497 +1,328 @@
 package Control.Vista;
 
-import vista.VentanaPrincipal;
-import vista.paneles.*;
-import modelo.*;
-import modelo.Enums.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import Control.ControladorPrincipal;
+import modelo.Solicitud;
+import modelo.Tecnico;
+import modelo.Vehiculo;
+import modelo.Enums.Estado;
+import modelo.Enums.Especialidad;
+import modelo.Enums.Prioridad;
+import modelo.Enums.TipoCliente;
+import modelo.Enums.TipoServicio;
+import modelo.Enums.TipoVehiculo;
+import modelo.Cliente;
+import modelo.Operacion;
+import vista.VentanaPrincipal;
 
-/**
- * Controlador de la Vista en el patrón MVC.
- * 
- * Responsabilidades:
- * - Manejar eventos de la interfaz gráfica
- * - Coordinar la navegación entre paneles
- * - Procesar datos de formularios
- * - Comunicar con el modelo (futuro)
- * 
- * SOLID: Single Responsibility - Solo gestiona la lógica de la Vista
- * NO contiene lógica de negocio, solo coordinación de UI
- */
+import javax.swing.*;
+import java.io.File;
+
 public class ControladorVista {
-	
-	private VentanaPrincipal ventana;
-	private ControladorPrincipal controlador;
-	
-	// Paneles actuales
-	private PanelSolicitudes panelSolicitudes;
-	private PanelCrearSolicitud panelCrearSolicitud;
-	private PanelVehiculos panelVehiculos;
-	private PanelCrearVehiculos panelCrearVehiculos;
-	private PanelOperaciones panelOperaciones;
-	private PanelTecnicos panelTecnicos;
-	
-	/**
-	 * Constructor del controlador
-	 * 
-	 * @param ventana la ventana principal de la aplicación
-	 * @param controlador el controlador principal que coordina el modelo
-	 */
-	public ControladorVista(VentanaPrincipal ventana, ControladorPrincipal controlador) {
-		this.ventana = ventana;
-		this.controlador = controlador;
-		inicializar();
-	}
-	
-	/**
-	 * Inicializa el controlador registrando todos los listeners
-	 */
-	private void inicializar() {
-		registrarListenersNavegacion();
-		cargarPanelInicial();
-	}
-	
-	/**
-	 * Registra los listeners para los botones de navegación principal
-	 */
-	private void registrarListenersNavegacion() {
-		ventana.registrarListenerNavegacion(
-			e -> navegarASolicitudes(),
-			e -> navegarACrearSolicitud(),
-			e -> navegarAVehiculos(),
-			e -> navegarACrearVehiculos(),
-			e -> navegarAOperaciones(),
-			e -> navegarATecnicos()
-		);
-	}
-	
-	/**
-	 * Carga el panel inicial (solicitudes)
-	 */
-	private void cargarPanelInicial() {
-		navegarASolicitudes();
-	}
-	
-	// ==================== Métodos de Navegación ====================
-	
-	/**
-	 * Navega al panel de solicitudes
-	 */
-	private void navegarASolicitudes() {
-		panelSolicitudes = ventana.mostrarPanelSolicitudes();
-		registrarListenersPanelSolicitudes();
-		cargarDatosSolicitudes();
-	}
-	
-	/**
-	 * Navega al panel de crear solicitud
-	 */
-	private void navegarACrearSolicitud() {
-		panelCrearSolicitud = ventana.mostrarPanelCrearSolicitud();
-		registrarListenersPanelCrearSolicitud();
-		cargarComboBoxesSolicitud();
-	}
-	
-	/**
-	 * Navega al panel de vehículos
-	 */
-	private void navegarAVehiculos() {
-		panelVehiculos = ventana.mostrarPanelVehiculos();
-		registrarListenersPanelVehiculos();
-		cargarDatosVehiculos();
-	}
-	
-	/**
-	 * Navega al panel de crear vehículos
-	 */
-	private void navegarACrearVehiculos() {
-		panelCrearVehiculos = ventana.mostrarPanelCrearVehiculos();
-		registrarListenersPanelCrearVehiculos();
-	}
-	
-	/**
-	 * Navega al panel de operaciones
-	 */
-	private void navegarAOperaciones() {
-		panelOperaciones = ventana.mostrarPanelOperaciones();
-		registrarListenersPanelOperaciones();
-		cargarDatosOperaciones();
-	}
-	
-	/**
-	 * Navega al panel de técnicos
-	 */
-	private void navegarATecnicos() {
-		panelTecnicos = ventana.mostrarPanelTecnicos();
-		registrarListenersPanelTecnicos();
-		cargarDatosTecnicos();
-	}
-	
-	// ==================== Listeners Panel Solicitudes ====================
-	
-	private void registrarListenersPanelSolicitudes() {
-		if (panelSolicitudes == null) return;
-		
-		panelSolicitudes.registrarListenerActualizar(e -> cargarDatosSolicitudes());
-		panelSolicitudes.registrarListenerVerDetalles(e -> verDetallesSolicitud());
-		panelSolicitudes.registrarListenerCancelar(e -> cancelarSolicitud());
-	}
-	
-	private void cargarDatosSolicitudes() {
-		if (panelSolicitudes == null || controlador == null) return;
-		
-		panelSolicitudes.limpiarTabla();
-		
-		// Cargar solicitudes desde el controlador principal
-		Solicitud[] solicitudes = controlador.obtenerSolicitudesPendientes();
-		if (solicitudes != null) {
-			for (Solicitud sol : solicitudes) {
-				if (sol != null) {
-					String tecnico = "Sin asignar"; // TODO: Obtener técnico asignado
-					panelSolicitudes.agregarFila(
-						sol.getId().toString(),
-						sol.getCliente().getNombre(),
-						sol.getServicio().toString(),
-						sol.getEstado().toString(),
-						sol.getPrioridad().toString(),
-						sol.getZona(),
-						tecnico,
-						sol.getHoraRegistro().toString()
-					);
-				}
-			}
-		}
-		
-		panelSolicitudes.actualizarTotal(controlador.getTotalSolicitudes());
-	}
-	
-	private void verDetallesSolicitud() {
-		String id = panelSolicitudes.getIdSolicitudSeleccionada();
-		if (id == null) {
-			panelSolicitudes.mostrarError("Selecciona una solicitud primero");
-			return;
-		}
-		// TODO: Cargar detalles del modelo
-		panelSolicitudes.mostrarMensaje("Detalles de solicitud: " + id);
-	}
-	
-	private void cancelarSolicitud() {
-		String id = panelSolicitudes.getIdSolicitudSeleccionada();
-		if (id == null) {
-			panelSolicitudes.mostrarError("Selecciona una solicitud primero");
-			return;
-		}
-		if (panelSolicitudes.confirmar("¿Deseas cancelar la solicitud " + id + "?")) {
-			// TODO: Cancelar en el modelo
-			panelSolicitudes.mostrarMensaje("Solicitud cancelada");
-			cargarDatosSolicitudes();
-		}
-	}
-	
-	// ==================== Listeners Panel Crear Solicitud ====================
-	
-	private void registrarListenersPanelCrearSolicitud() {
-		if (panelCrearSolicitud == null) return;
-		
-		panelCrearSolicitud.registrarListenerCrear(e -> crearSolicitud());
-		panelCrearSolicitud.registrarListenerLimpiar(e -> limpiarFormularioSolicitud());
-		panelCrearSolicitud.registrarListenerCancelar(e -> navegarASolicitudes());
-	}
-	
-	private void cargarComboBoxesSolicitud() {
-		if (panelCrearSolicitud == null) return;
-		
-		// TODO: Cargar datos reales del modelo
-		// Por ahora está con datos de ejemplo en el panel
-	}
-	
-	private void crearSolicitud() {
-		if (panelCrearSolicitud == null || controlador == null) return;
-		
-		String nombre = panelCrearSolicitud.getNombreCliente();
-		if (nombre.isEmpty()) {
-			panelCrearSolicitud.mostrarError("El nombre del cliente es requerido");
-			return;
-		}
-		
-		String ubicacion = panelCrearSolicitud.getUbicacion();
-		if (ubicacion.isEmpty()) {
-			panelCrearSolicitud.mostrarError("La ubicación es requerida");
-			return;
-		}
-		
-		if (panelCrearSolicitud.confirmar("¿Crear solicitud para " + nombre + "?")) {
-			try {
-				// Obtener datos del formulario
-				String zona = panelCrearSolicitud.getZona();
-				String tipoServicioStr = panelCrearSolicitud.getTipoServicio();
-				String prioridadStr = panelCrearSolicitud.getPrioridad();
-				
-				// Convertir a enums
-				TipoServicio tipoServicio = TipoServicio.valueOf(tipoServicioStr);
-				Prioridad prioridad = Prioridad.valueOf(prioridadStr);
-				
-				// Crear cliente
-                controlador.agregarCliente(nombre, panelCrearSolicitud.getTelefonoCliente(), panelCrearSolicitud.getTipoCliente());
-				Cliente cliente = new Cliente(nombre, panelCrearSolicitud.getTelefonoCliente(), panelCrearSolicitud.getTipoCliente());
-				
-				// Crear solicitud
-				Solicitud solicitud = new Solicitud(zona, tipoServicio, prioridad, cliente);
-				
-				// Agregar al controlador
-				controlador.agregarSolicitud(solicitud);
-				
-				panelCrearSolicitud.mostrarMensaje("Solicitud creada exitosamente");
-				limpiarFormularioSolicitud();
-				navegarASolicitudes();
-			} catch (IllegalArgumentException e) {
-				panelCrearSolicitud.mostrarError("Error: Valores inválidos en el formulario");
-			}
-		}
-	}
-	
-	private void limpiarFormularioSolicitud() {
-		if (panelCrearSolicitud == null) return;
-		panelCrearSolicitud.limpiarFormulario();
-	}
-	
-	// ==================== Listeners Panel Vehículos ====================
-	
-	private void registrarListenersPanelVehiculos() {
-		if (panelVehiculos == null) return;
-		
-		panelVehiculos.registrarListenerActualizar(e -> cargarDatosVehiculos());
-		panelVehiculos.registrarListenerAsignar(e -> asignarVehiculo());
-	}
-	
-	private void cargarDatosVehiculos() {
-		if (panelVehiculos == null || controlador == null) return;
-		
-		panelVehiculos.limpiarTabla();
-		
-		// Cargar vehículos desde el controlador principal
-		Vehiculo[] vehiculos = controlador.obtenerTodosVehiculos();
-		if (vehiculos != null) {
-			for (Vehiculo v : vehiculos) {
-				if (v != null) {
-					panelVehiculos.agregarFila(
-						v.getId().toString(),
-						v.getTipo().toString(),
-						v.getEstado().toString(),
-						v.getZona()
-					);
-				}
-			}
-		}
-		
-		Vehiculo[] disponibles = controlador.obtenerVehiculosDisponibles();
-		int totalDisponibles = disponibles != null ? disponibles.length : 0;
-		panelVehiculos.actualizarEstadisticas(controlador.getTotalVehiculos(), totalDisponibles);
-	}
-	
-	private void verDetallesVehiculo() {
-		String id = panelVehiculos.getIdVehiculoSeleccionado();
-		if (id == null) {
-			panelVehiculos.mostrarError("Selecciona un vehículo primero");
-			return;
-		}
-		// TODO: Cargar detalles del modelo
-		panelVehiculos.mostrarMensaje("Detalles del vehículo: " + id);
-	}
-	
-	private void asignarVehiculo() {
-		String id = panelVehiculos.getIdVehiculoSeleccionado();
-		if (id == null) {
-			panelVehiculos.mostrarError("Selecciona un vehículo primero");
-			return;
-		}
-		// TODO: Ir a panel de solicitudes y asignar vehículo
-		panelVehiculos.mostrarMensaje("Asignando vehículo: " + id);
-	}
-	
-	// ==================== Listeners Panel Crear Vehículos ====================
-	
-	private void registrarListenersPanelCrearVehiculos() {
-		if (panelCrearVehiculos == null) return;
-		
-		panelCrearVehiculos.registrarListenerCrearVehiculo(e -> crearVehiculo());
-		panelCrearVehiculos.registrarListenerLimpiarVehiculo(e -> limpiarFormularioVehiculo());
-		panelCrearVehiculos.registrarListenerCrearTecnico(e -> crearTecnico());
-		panelCrearVehiculos.registrarListenerLimpiarTecnico(e -> limpiarFormularioTecnico());
-	}
-	
-	private void crearVehiculo() {
-		if (panelCrearVehiculos == null || controlador == null) return;
-		
-		String placa = panelCrearVehiculos.getPlacaVehiculo();
-		if (placa.isEmpty()) {
-			panelCrearVehiculos.mostrarError("La placa es requerida");
-			return;
-		}
-		
-		String zona = panelCrearVehiculos.getZonaVehiculo();
-		String tipoStr = panelCrearVehiculos.getTipoVehiculo();
-		
-		try {
-			TipoVehiculo tipo = TipoVehiculo.valueOf(tipoStr);
-			
-			if (panelCrearVehiculos.confirmar("¿Crear vehículo con placa " + placa + "?")) {
-				controlador.agregarVehiculo(tipo, zona);
-				panelCrearVehiculos.mostrarMensaje("Vehículo creado exitosamente");
-				limpiarFormularioVehiculo();
-			}
-		} catch (IllegalArgumentException e) {
-			panelCrearVehiculos.mostrarError("Tipo de vehículo inválido");
-		}
-	}
-	
-	private void limpiarFormularioVehiculo() {
-		if (panelCrearVehiculos == null) return;
-		panelCrearVehiculos.limpiarFormularioVehiculo();
-	}
-	
-	private void crearTecnico() {
-		if (panelCrearVehiculos == null || controlador == null) return;
-		
-		String nombre = panelCrearVehiculos.getNombreTecnico();
-		if (nombre.isEmpty()) {
-			panelCrearVehiculos.mostrarError("El nombre del técnico es requerido");
-			return;
-		}
-		
-		String zona = panelCrearVehiculos.getZonaTecnico();
-		String especialidadStr = panelCrearVehiculos.getEspecialidadTecnico();
-		
-		try {
-			Especialidad especialidad = Especialidad.valueOf(especialidadStr);
-			
-			if (panelCrearVehiculos.confirmar("¿Crear técnico " + nombre + "?")) {
-				controlador.agregarTecnico(nombre, zona, especialidad);
-				panelCrearVehiculos.mostrarMensaje("Técnico creado exitosamente");
-				limpiarFormularioTecnico();
-			}
-		} catch (IllegalArgumentException e) {
-			panelCrearVehiculos.mostrarError("Especialidad inválida");
-		}
-	}
-	
-	private void limpiarFormularioTecnico() {
-		if (panelCrearVehiculos == null) return;
-		panelCrearVehiculos.limpiarFormularioTecnico();
-	}
-	
-	// ==================== Listeners Panel Operaciones ====================
-	
-	private void registrarListenersPanelOperaciones() {
-		if (panelOperaciones == null) return;
-		
-		panelOperaciones.registrarListenerActualizar(e -> cargarDatosOperaciones());
-		panelOperaciones.registrarListenerVerDetalles(e -> verDetallesOperacion());
-		panelOperaciones.registrarListenerDeshacer(e -> deshacerOperacion());
-	}
-	
-	private void cargarDatosOperaciones() {
-		if (panelOperaciones == null || controlador == null) return;
-		
-		panelOperaciones.limpiarTabla();
-		
-		// Cargar operaciones desde el controlador principal
-		Operacion[] operaciones = controlador.obtenerTodasOperaciones();
-		if (operaciones != null) {
-			for (int i = 0; i < operaciones.length; i++) {
-				Operacion op = operaciones[i];
-				if (op != null) {
-					panelOperaciones.agregarOperacion(
-						String.valueOf(i + 1),
-						op.getTipo().toString(),
-						"Objeto", // TODO: Obtener del modelo
-						op.getEstadoAnterior().toString(),
-						op.getHora().toString()
-					);
-				}
-			}
-		}
-		
-		panelOperaciones.actualizarTotal(controlador.getTotalOperaciones());
-	}
-	
-	private void verDetallesOperacion() {
-		String orden = panelOperaciones.getOrdenSeleccionada();
-		if (orden == null) {
-			panelOperaciones.mostrarError("Selecciona una operación primero");
-			return;
-		}
-		// TODO: Cargar detalles del modelo
-	}
-	
-	private void deshacerOperacion() {
-		// TODO: Deshacer operación del modelo
-		panelOperaciones.mostrarMensaje("Operación deshecha");
-		cargarDatosOperaciones();
-	}
-	
-	// ==================== Listeners Panel Técnicos ====================
-	
-	private void registrarListenersPanelTecnicos() {
-		if (panelTecnicos == null) return;
-		
-		panelTecnicos.registrarListenerActualizar(e -> cargarDatosTecnicos());
-		panelTecnicos.registrarListenerAsignar(e -> asignarTecnico());
-	}
-	
-	private void cargarDatosTecnicos() {
-		if (panelTecnicos == null || controlador == null) return;
-		
-		panelTecnicos.limpiarTabla();
-		
-		// Cargar técnicos desde el controlador principal
-		Tecnico[] tecnicos = controlador.obtenerTodosTecnicos();
-		if (tecnicos != null) {
-			for (Tecnico t : tecnicos) {
-				if (t != null) {
-					panelTecnicos.agregarFila(
-						t.getId().toString(),
-						t.getNombre(),
-						t.getEspecialidad().toString(),
-						t.getEstado().toString(),
-						t.getZona()
-					);
-				}
-			}
-		}
-		
-		Tecnico[] disponibles = controlador.obtenerTecnicosDisponibles();
-		int totalDisponibles = disponibles != null ? disponibles.length : 0;
-		panelTecnicos.actualizarEstadisticas(controlador.getTotalTecnicos(), totalDisponibles);
-	}
-	
-	private void verDetallesTecnico() {
-		String id = panelTecnicos.getIdTecnicoSeleccionado();
-		if (id == null) {
-			panelTecnicos.mostrarError("Selecciona un técnico primero");
-			return;
-		}
-		// TODO: Cargar detalles del modelo
-		panelTecnicos.mostrarMensaje("Detalles del técnico: " + id);
-	}
-	
-	private void asignarTecnico() {
-		String id = panelTecnicos.getIdTecnicoSeleccionado();
-		if (id == null) {
-			panelTecnicos.mostrarError("Selecciona un técnico primero");
-			return;
-		}
-		// TODO: Ir a panel de solicitudes y asignar técnico
-		panelTecnicos.mostrarMensaje("Asignando técnico: " + id);
-	}
-	
-	/**
-	 * Obtiene la ventana para acceso externo si es necesario
-	 */
-	public VentanaPrincipal getVentana() {
-		return ventana;
-	}
+
+    private ControladorPrincipal controlador;
+    private VentanaPrincipal ventana;
+
+    public ControladorVista(VentanaPrincipal ventana, ControladorPrincipal controlador) {
+        this.ventana = ventana;
+        this.controlador = controlador;
+        initEventos();
+    }
+
+    private void initEventos() {
+        initEventosVehiculos();
+        initEventosTecnicos();
+        initEventosSolicitudes();
+        initEventosKits();
+        initEventosReporte();
+    }
+
+    // ==================== PANEL VEHÍCULOS ====================
+
+    private void initEventosVehiculos() {
+        ventana.getPanelVehiculos().getBtnRegistrar().addActionListener(e -> {
+            registrarVehiculo();
+        });
+    }
+
+    private void registrarVehiculo() {
+        TipoVehiculo tipo = ventana.getPanelVehiculos().getTipoSeleccionado();
+        String zona = ventana.getPanelVehiculos().getZona();
+        if (zona.isEmpty()) {
+            ventana.mostrarError("La zona no puede estar vacía");
+            return;
+        }
+        controlador.registrarVehiculo(tipo, zona);
+        ventana.mostrarMensaje("Vehículo registrado correctamente");
+        ventana.getPanelVehiculos().limpiarFormulario();
+        cargarTablaVehiculos();
+    }
+
+    private void cargarTablaVehiculos() {
+        Vehiculo[] vehiculos = controlador.obtenerTodosVehiculos();
+        ventana.getPanelVehiculos().cargarTabla(vehiculos);
+    }
+
+    private void cargarVehiculosDisponibles() {
+        Vehiculo[] disponibles = controlador.obtenerVehiculosPorEstado(Estado.DISPONIBLE);
+        ventana.getPanelSolicitudes().cargarVehiculosDisponibles(disponibles);
+    }
+
+    // ==================== PANEL TÉCNICOS ====================
+
+    private void initEventosTecnicos() {
+        ventana.getPanelTecnicos().getBtnRegistrar().addActionListener(e -> {
+            registrarTecnico();
+        });
+    }
+
+    private void registrarTecnico() {
+        String nombre = ventana.getPanelTecnicos().getNombre();
+        String zona = ventana.getPanelTecnicos().getZona();
+        Especialidad especialidad = ventana.getPanelTecnicos().getEspecialidadSeleccionada();
+        if (nombre.isEmpty()) {
+            ventana.mostrarError("El nombre no puede estar vacío");
+            return;
+        }
+        if (zona.isEmpty()) {
+            ventana.mostrarError("La zona no puede estar vacía");
+            return;
+        }
+        controlador.registrarTecnico(nombre, zona, especialidad);
+        ventana.mostrarMensaje("Técnico registrado correctamente");
+        ventana.getPanelTecnicos().limpiarFormulario();
+        cargarTablaTecnicos();
+    }
+
+    private void cargarTablaTecnicos() {
+        Tecnico[] tecnicos = controlador.obtenerTodosTecnicos();
+        ventana.getPanelTecnicos().cargarTabla(tecnicos);
+    }
+
+    private void cargarTecnicosDisponibles() {
+        Tecnico[] disponibles = controlador.obtenerTecnicosPorEstado(Estado.DISPONIBLE);
+        ventana.getPanelSolicitudes().cargarTecnicosDisponibles(disponibles);
+    }
+
+    // ==================== PANEL SOLICITUDES ====================
+
+    private void initEventosSolicitudes() {
+        ventana.getPanelSolicitudes().getBtnCrearSolicitud().addActionListener(e -> {
+            crearSolicitud();
+        });
+        ventana.getPanelSolicitudes().getBtnSiguienteSolicitud().addActionListener(e -> {
+            obtenerSiguienteSolicitud();
+        });
+        ventana.getPanelSolicitudes().getBtnAsignarRecursos().addActionListener(e -> {
+            asignarRecursos();
+        });
+        ventana.getPanelSolicitudes().getBtnCerrarSolicitud().addActionListener(e -> {
+            cerrarSolicitud();
+        });
+    }
+
+    private void crearSolicitud() {
+        String zona = ventana.getPanelSolicitudes().getZona();
+        String nombreCliente = ventana.getPanelSolicitudes().getNombreCliente();
+        String telefonoCliente = ventana.getPanelSolicitudes().getTelefonoCliente();
+        TipoServicio servicio = ventana.getPanelSolicitudes().getServicioSeleccionado();
+        Prioridad prioridad = ventana.getPanelSolicitudes().getPrioridadSeleccionada();
+        TipoCliente tipoCliente = ventana.getPanelSolicitudes().getTipoClienteSeleccionado();
+
+        if (zona.isEmpty()) {
+            ventana.mostrarError("La zona no puede estar vacía");
+            return;
+        }
+        if (nombreCliente.isEmpty()) {
+            ventana.mostrarError("El nombre del cliente no puede estar vacío");
+            return;
+        }
+
+        Cliente cliente = controlador.registrarCliente(nombreCliente, telefonoCliente, tipoCliente);
+        controlador.crearSolicitud(zona, servicio, prioridad, cliente);
+        ventana.mostrarMensaje("Solicitud creada correctamente");
+        ventana.getPanelSolicitudes().limpiarFormulario();
+        cargarTablaSolicitudes();
+
+        if (controlador.haySolicitudesCriticas()) {
+            ventana.mostrarAlerta("Hay solicitudes críticas pendientes");
+        }
+    }
+
+    private void obtenerSiguienteSolicitud() {
+        Solicitud siguiente = controlador.obtenerSiguienteSolicitud();
+        if (siguiente == null) {
+            ventana.mostrarError("No hay solicitudes pendientes");
+            return;
+        }
+        ventana.getPanelSolicitudes().mostrarSolicitud(siguiente);
+        cargarVehiculosDisponibles();
+        cargarTecnicosDisponibles();
+    }
+
+    private void asignarRecursos() {
+        Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudActual();
+        Vehiculo vehiculo = ventana.getPanelSolicitudes().getVehiculoSeleccionado();
+        Tecnico tecnico = ventana.getPanelSolicitudes().getTecnicoSeleccionado();
+
+        if (solicitud == null) {
+            ventana.mostrarError("Debe obtener la siguiente solicitud primero");
+            return;
+        }
+        if (vehiculo == null) {
+            ventana.mostrarError("No hay vehículos disponibles");
+            return;
+        }
+        if (tecnico == null) {
+            ventana.mostrarError("No hay técnicos disponibles");
+            return;
+        }
+
+        boolean vehiculoAsignado = controlador.asignarVehiculo(solicitud, vehiculo);
+        if (!vehiculoAsignado) {
+            ventana.mostrarError("El vehículo no está disponible");
+            return;
+        }
+        boolean tecnicoAsignado = controlador.asignarTecnico(solicitud, tecnico);
+        if (!tecnicoAsignado) {
+            ventana.mostrarError("El técnico no está disponible");
+            return;
+        }
+
+        ventana.mostrarMensaje("Recursos asignados correctamente");
+        cargarTablaSolicitudes();
+        cargarTablaVehiculos();
+        cargarTablaTecnicos();
+    }
+
+    private void cerrarSolicitud() {
+        Solicitud solicitud = ventana.getPanelSolicitudes().getSolicitudActual();
+        if (solicitud == null) {
+            ventana.mostrarError("No hay solicitud activa");
+            return;
+        }
+        boolean cerrada = controlador.cerrarSolicitud(solicitud);
+        if (!cerrada) {
+            ventana.mostrarError("La solicitud no tiene recursos asignados");
+            return;
+        }
+        ventana.mostrarMensaje("Solicitud cerrada correctamente");
+        cargarTablaSolicitudes();
+        cargarTablaVehiculos();
+        cargarTablaTecnicos();
+    }
+
+    private void cargarTablaSolicitudes() {
+        Solicitud[] solicitudes = controlador.obtenerSolicitudesPendientes();
+        ventana.getPanelSolicitudes().cargarTabla(solicitudes);
+    }
+
+    // ==================== PANEL KITS ====================
+
+    private void initEventosKits() {
+        ventana.getPanelKits().getBtnAgregarKit().addActionListener(e -> {
+            agregarKit();
+        });
+        ventana.getPanelKits().getBtnRetirarKit().addActionListener(e -> {
+            retirarKit();
+        });
+        ventana.getPanelKits().getBtnAgregarRepuesto().addActionListener(e -> {
+            agregarRepuesto();
+        });
+        ventana.getPanelKits().getBtnRetirarRepuesto().addActionListener(e -> {
+            retirarRepuesto();
+        });
+    }
+
+    private void agregarKit() {
+        int cantidad = ventana.getPanelKits().getCantidadElementos();
+        if (cantidad <= 0) {
+            ventana.mostrarError("La cantidad debe ser mayor a 0");
+            return;
+        }
+        controlador.agregarKit(cantidad);
+        ventana.mostrarMensaje("Kit agregado correctamente");
+        ventana.getPanelKits().limpiarFormularioKit();
+        actualizarInfoKits();
+    }
+
+    private void retirarKit() {
+        if (!controlador.hayKits()) {
+            ventana.mostrarError("No hay kits disponibles");
+            return;
+        }
+        controlador.retirarKit();
+        ventana.mostrarMensaje("Kit retirado correctamente");
+        actualizarInfoKits();
+    }
+
+    private void agregarRepuesto() {
+        String nombre = ventana.getPanelKits().getNombreRepuesto();
+        int cantidad = ventana.getPanelKits().getCantidadRepuesto();
+        if (nombre.isEmpty()) {
+            ventana.mostrarError("El nombre del repuesto no puede estar vacío");
+            return;
+        }
+        if (cantidad <= 0) {
+            ventana.mostrarError("La cantidad debe ser mayor a 0");
+            return;
+        }
+        controlador.agregarRepuesto(nombre, cantidad);
+        ventana.mostrarMensaje("Repuesto agregado correctamente");
+        ventana.getPanelKits().limpiarFormularioRepuesto();
+        actualizarInfoKits();
+    }
+
+    private void retirarRepuesto() {
+        if (!controlador.hayRepuestos()) {
+            ventana.mostrarError("No hay repuestos disponibles");
+            return;
+        }
+        controlador.retirarRepuesto();
+        ventana.mostrarMensaje("Repuesto retirado correctamente");
+        actualizarInfoKits();
+    }
+
+    private void actualizarInfoKits() {
+        ventana.getPanelKits().actualizarInfo(
+            controlador.getTotalKits(),
+            controlador.getTotalRepuestos()
+        );
+    }
+
+    // ==================== PANEL REPORTE ====================
+
+    private void initEventosReporte() {
+        ventana.getPanelReporte().getBtnSeleccionarRuta().addActionListener(e -> {
+            seleccionarRuta();
+        });
+        ventana.getPanelReporte().getBtnExportar().addActionListener(e -> {
+            exportarCSV();
+        });
+    }
+
+    private void seleccionarRuta() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar reporte CSV");
+        fileChooser.setSelectedFile(new File("reporte_dia.csv"));
+        int resultado = fileChooser.showSaveDialog(ventana);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            ventana.getPanelReporte().setRutaArchivo(
+                fileChooser.getSelectedFile().getAbsolutePath()
+            );
+        }
+    }
+
+    private void exportarCSV() {
+        String ruta = ventana.getPanelReporte().getRutaArchivo();
+        if (ruta.isEmpty()) {
+            ventana.mostrarError("Debe seleccionar una ruta para el archivo");
+            return;
+        }
+        boolean exportado = controlador.exportarCSV(ruta);
+        if (exportado) {
+            ventana.getPanelReporte().mostrarEstado("Reporte exportado correctamente", true);
+        } else {
+            ventana.getPanelReporte().mostrarEstado("Error al exportar el reporte", false);
+        }
+    }
 }
