@@ -127,17 +127,13 @@ public class PanelSolicitudes extends JPanel {
         panelAsignacion.add(btnAsignarRecursos, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        panelAsignacion.add(new JSeparator(), gbc);
-
-        gbc.gridx = 0; gbc.gridy = 5;
         gbc.gridwidth = 1;
         panelAsignacion.add(new JLabel("Solicitud a cerrar:"), gbc);
         gbc.gridx = 1;
         comboEnProceso = new JComboBox<>();
         panelAsignacion.add(comboEnProceso, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0; gbc.gridy = 5;
         gbc.gridwidth = 2;
         btnCerrarSolicitud = new JButton("Cerrar Solicitud");
         panelAsignacion.add(btnCerrarSolicitud, gbc);
@@ -160,6 +156,7 @@ public class PanelSolicitudes extends JPanel {
         tablaSolicitudes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         add(new JScrollPane(tablaSolicitudes), BorderLayout.CENTER);
     }
+    
 
     public void cargarTabla(Solicitud[] solicitudes) {
         modeloTabla.setRowCount(0);
@@ -211,6 +208,7 @@ public class PanelSolicitudes extends JPanel {
 
     public void cargarSolicitudesEnProceso(Solicitud[] solicitudes) {
         comboEnProceso.removeAllItems();
+        comboEnProceso.addItem(null);
         for (int i = 0; i < solicitudes.length; i++) {
             comboEnProceso.addItem(solicitudes[i]);
         }
@@ -231,6 +229,7 @@ public class PanelSolicitudes extends JPanel {
     public JButton getBtnSiguienteSolicitud() { return btnSiguienteSolicitud; }
     public JButton getBtnAsignarRecursos() { return btnAsignarRecursos; }
     public JButton getBtnCerrarSolicitud() { return btnCerrarSolicitud; }
+    
 
     public Solicitud getSolicitudACerrar() {
         return (Solicitud) comboEnProceso.getSelectedItem();

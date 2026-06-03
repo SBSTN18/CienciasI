@@ -54,7 +54,7 @@ public class Vehiculo {
     }
 
     public String toString() {
-        return "Vehiculo{" + "id=" + id + ", estado=" + estado + ", tipo=" + tipo + ", zona=" + zona + '}';
+        return "Vehiculo:" + "id=" + id + ", tipo=" + tipo + ", zona=" + zona;
     }
 
 }

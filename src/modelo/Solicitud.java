@@ -94,12 +94,7 @@ public class Solicitud {
     public LocalDateTime getHoraFin() { return horaFin; }
 
     public String toString() {
-        return "Solicitud{" + "id=" + id + ", zona=" + zona + ", servicio=" + servicio + 
-               ", prioridad=" + prioridad + ", estado=" + estado + 
-               ", cliente=" + cliente.getNombre() + ", vehiculoAsignado=" + 
-               (vehiculoAsignado != null ? vehiculoAsignado.getId() : "N/A") + 
-               ", tecnicoAsignado=" + 
-               (tecnicoAsignado != null ? tecnicoAsignado.getNombre() : "N/A") + 
-               ", horaRegistro=" + horaRegistro + ", horaFin=" + horaFin + '}';
+        return "id:" + id + ", servicio:" + servicio + 
+               "para " + cliente.getNombre() ;
     }
 }

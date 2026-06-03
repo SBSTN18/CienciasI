@@ -65,6 +65,6 @@ public class Tecnico {
     }
     
     public String toString() {
-        return "Tecnico{" + "id=" + id + ", nombre=" + nombre + ", zona=" + zona + ", especialidad=" + especialidad + ", estado=" + estado + '}';
+        return "Tecnico: " + nombre + ", zona=" + zona + ", especialidad=" + especialidad;
     }
 }

@@ -19,6 +19,7 @@ public class ControladorPrincipal {
     private ColaSolicitudControl colaSolicitudes;
     private ListaTecnicosControl listaTecnicos;
     private ListaVehiculosControl listaVehiculos;
+    private ListaEnProceso listaEnProceso;
     private PilaOperacionesControl pilaOperaciones;
     private PilaKitsControl pilaKits;
     private PilaRepuestoControl pilaRepuesto;
@@ -29,6 +30,7 @@ public class ControladorPrincipal {
         this.colaSolicitudes = new ColaSolicitudControl();
         this.listaTecnicos = new ListaTecnicosControl();
         this.listaVehiculos = new ListaVehiculosControl();
+        this.listaEnProceso = new ListaEnProceso();
         this.pilaOperaciones = new PilaOperacionesControl();
         this.pilaKits = new PilaKitsControl();
         this.pilaRepuesto = new PilaRepuestoControl();
@@ -135,7 +137,7 @@ public class ControladorPrincipal {
         
         // Si ahora tiene ambos recursos, agregar a en proceso
         if (solicitud.tieneRecursosAsignados()) {
-            colaSolicitudes.agregarEnProceso(solicitud);
+            listaEnProceso.agregarEnProceso(solicitud);
         }
         
         return true;
@@ -152,12 +154,14 @@ public class ControladorPrincipal {
         solicitud.getVehiculoAsignado().setEstado(Estado.DISPONIBLE);
         solicitud.getTecnicoAsignado().setEstado(Estado.DISPONIBLE);
         colaSolicitudes.agregarCerrada(solicitud); 
+        listaEnProceso.cerrarSolicitud(solicitud);
         return true;
     }
 
     public Solicitud[] obtenerSolicitudesEnProceso() {
-        return colaSolicitudes.obtenerEnProceso();
+        return listaEnProceso.obtenerEnProceso();
     }
+
 
     // ==================== PASO 7: DESHACER OPERACIONES ====================
 

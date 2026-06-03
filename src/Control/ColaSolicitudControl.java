@@ -11,7 +11,6 @@ public class ColaSolicitudControl {
     private Cola<Solicitud> pCritica;
     private Cola<Solicitud> pEmergencia;
     private Cola<Solicitud> pCerradas;
-    private Cola<Solicitud> pEnProceso;
 
     public ColaSolicitudControl() {
         this.pOrdinaria = new Cola();
@@ -19,7 +18,6 @@ public class ColaSolicitudControl {
         this.pCritica = new Cola();
         this.pEmergencia = new Cola();
         this.pCerradas = new Cola<>();
-        this.pEnProceso = new Cola<>();
     }
 
     public void agregarSolicitud(Solicitud solicitud) {
@@ -43,9 +41,6 @@ public class ColaSolicitudControl {
         pCerradas.encolar(solicitud);
     }
 
-    public void agregarEnProceso(Solicitud solicitud) {
-        pEnProceso.encolar(solicitud);
-    }
 
     public Solicitud obtenerSiguienteSolicitud() {
         if (!pEmergencia.estaVacia()) {
@@ -118,15 +113,4 @@ public class ColaSolicitudControl {
         return cerradas;
     }
 
-    public Solicitud[] obtenerEnProceso() {
-        int total = pEnProceso.getTamaño();
-        Solicitud[] enProceso = new Solicitud[total];
-        int i = 0;
-        Nodo<Solicitud> actual = pEnProceso.getFrente();
-        while (actual != null) {
-            enProceso[i++] = actual.getDato();
-            actual = actual.getSiguiente();
-        }
-        return enProceso;
-    }
 }

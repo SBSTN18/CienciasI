@@ -52,6 +52,10 @@ public class Lista<T> {
         return true;
     }
 
+    public void setCabeza(Nodo<T> cabeza) {
+        this.cabeza = cabeza;
+    }
+
     public Nodo<T> getCabeza() {
         return cabeza;
     }
